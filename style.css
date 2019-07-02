@@ -1,0 +1,7 @@
+input[type=text]{
+	color:red;
+}
+
+.complete{
+	text-decoration: line-through;
+}
