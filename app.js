@@ -15,8 +15,11 @@ btnAdd.addEventListener("click", function(){
 
 function updateTodo(){
 	todos.innerHTML = "";
-	fetch("http://localhost:61345/todos", function(todoListServer){
-		todoLists = todoListServer;
+	fetch("http://localhost:61345/todos").then((response) => {
+		return response.json();
+	}).then(data => {
+		todoLists = data;
+		console.log(todoLists);
 		todoLists.forEach(function(el){
 		let li = "";
 		if(el.complete){
@@ -33,8 +36,11 @@ todos.addEventListener("click", function(e){
 	if(e.target.localName === "li"){
 		todoLists.forEach(function(el){
 			if(el.id == e.target.id) { 
-				fetch(`http://localhost:61345/todos/${el.id}/completed`, function(data){
+				fetch(`http://localhost:61345/todos/${el.id}/completed`)
+				.then(response => response.json())
+				.then(data => {
 					el.complete = true;
+					alert(data);
 				});
 			}
 		});
@@ -42,17 +48,22 @@ todos.addEventListener("click", function(e){
 	updateTodo();
 });
 
-btn-delete.addEventListener("click", function(e){
-	if(e.target.localName === "li"){
-		todoLists.forEach(function(el){
-			if(el.id == e.target.id) { 
-				fetch(`http://localhost:61345/todos/${el.id}/delete`, function(data){
-					alert("Success Delete");
-				});
-			}
-		});
-	}
-	updateTodo();
+document.querySelectorAll(".btn-delete").forEach(function(el, i){
+	el.addEventListener("click", function(e){
+		if(e.target.localName === "li"){
+			todoLists.forEach(function(el){
+				if(el.id == e.target.id) { 
+					fetch(`http://localhost:61345/todos/${el.id}/delete`)
+					.then(response => response.json())
+					.then(data => {
+						el.complete = true;
+						alert(data);
+					});
+				}
+			});
+		}
+		updateTodo();
+	});
 });
 
 updateTodo();
