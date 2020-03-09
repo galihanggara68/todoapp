@@ -1,6 +1,7 @@
 
 var todoLists = [];
 var id = 1;
+
 btnAdd.addEventListener("click", function(){
 	let todo = {
 		id: id++,
@@ -14,22 +15,44 @@ btnAdd.addEventListener("click", function(){
 
 function updateTodo(){
 	todos.innerHTML = "";
-	todoLists.forEach(function(el){
+	fetch("http://localhost:61345/todos", function(todoListServer){
+		todoLists = todoListServer;
+		todoLists.forEach(function(el){
 		let li = "";
 		if(el.complete){
-			li = `<li id="${el.id}" class="complete">${el.value}</li>`;
+			li = `<li id="${el.id}" class="complete">${el.value} <span class="btn-delete">x</span></li>`;
 		}else{
-			li = `<li id="${el.id}">${el.value}</li>`;
+			li = `<li id="${el.id}">${el.value} <span class="btn-delete">x</span></li>`;
 		}
 		todos.innerHTML += li; // String template
+	});
 	});
 }
 
 todos.addEventListener("click", function(e){
 	if(e.target.localName === "li"){
 		todoLists.forEach(function(el){
-			if(el.id == e.target.id) el.complete = true;
+			if(el.id == e.target.id) { 
+				fetch(`http://localhost:61345/todos/${el.id}/completed`, function(data){
+					el.complete = true;
+				});
+			}
 		});
 	}
 	updateTodo();
 });
+
+btn-delete.addEventListener("click", function(e){
+	if(e.target.localName === "li"){
+		todoLists.forEach(function(el){
+			if(el.id == e.target.id) { 
+				fetch(`http://localhost:61345/todos/${el.id}/delete`, function(data){
+					alert("Success Delete");
+				});
+			}
+		});
+	}
+	updateTodo();
+});
+
+updateTodo();
