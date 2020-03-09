@@ -31,7 +31,7 @@ function updateTodo(){
 		console.log(todoLists);
 		todoLists.forEach(function(el){
 		let li = "";
-		if(el.Complete){
+		if(el.Completed){
 			li = `<li id="${el.ID}" class="complete">${el.Value} <span class="btn-delete">x</span></li>`;
 		}else{
 			li = `<li id="${el.ID}">${el.Value} <span class="btn-delete">x</span></li>`;
@@ -49,10 +49,11 @@ $("#todos").on("click", "li", function(e){
 			.then(data => {
 				el.Complete = true;
 				alert(data);
+				updateTodo();
 			});
 		}
 	});
-	updateTodo();
+	
 });
 
 $("#todos").on("click", ".btn-delete",function(e){
@@ -65,10 +66,11 @@ $("#todos").on("click", ".btn-delete",function(e){
 			.then(data => {
 				el.Complete = true;
 				alert(data);
+				updateTodo();
 			});
 		}
 	});
-	updateTodo();
+	
 });
 
 updateTodo();
