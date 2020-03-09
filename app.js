@@ -20,9 +20,9 @@ function updateTodo(){
 		todoLists.forEach(function(el){
 		let li = "";
 		if(el.complete){
-			li = `<li id="${el.id}" class="complete">${el.value} <span class="btn-delete">x</span></li>`;
+			li = `<li id="${el.ID}" class="complete">${el.Value} <span class="btn-delete">x</span></li>`;
 		}else{
-			li = `<li id="${el.id}">${el.value} <span class="btn-delete">x</span></li>`;
+			li = `<li id="${el.ID}">${el.Value} <span class="btn-delete">x</span></li>`;
 		}
 		todos.innerHTML += li; // String template
 	});
