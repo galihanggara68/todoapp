@@ -15,9 +15,11 @@ btnAdd.addEventListener("click", function(){
 		body: JSON.stringify(todo)
 	})
 		.then(response => response.json())
-		.then(data => alert(data));
-	console.log(todoLists);
-	updateTodo();
+		.then(data => {
+			alert(data);
+			updateTodo();
+		});
+	
 });
 
 function updateTodo(){
