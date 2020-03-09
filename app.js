@@ -11,6 +11,7 @@ btnAdd.addEventListener("click", function(){
 	todoLists.push(todo);
 	fetch("http://localhost:61345/todos", {
 		method: "POST",
+		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(todo)
 	})
 		.then(response => response.json())
@@ -38,38 +39,34 @@ function updateTodo(){
 	});
 }
 
-todos.addEventListener("click", function(e){
-	if(e.target.localName === "li"){
-		todoLists.forEach(function(el){
-			if(el.id == e.target.id) { 
-				fetch(`http://localhost:61345/todos/${el.id}/completed`)
-				.then(response => response.json())
-				.then(data => {
-					el.Complete = true;
-					alert(data);
-				});
-			}
-		});
-	}
+$("#todos").on("click", "li", function(e){
+	todoLists.forEach(function(el){
+		if(el.ID == e.target.id) { 
+			fetch(`http://localhost:61345/todos/${el.ID}/completed`)
+			.then(response => response.json())
+			.then(data => {
+				el.Complete = true;
+				alert(data);
+			});
+		}
+	});
 	updateTodo();
 });
 
-document.querySelectorAll(".btn-delete").forEach(function(el, i){
-	el.addEventListener("click", function(e){
-		if(e.target.localName === "li"){
-			todoLists.forEach(function(el){
-				if(el.id == e.target.id) { 
-					fetch(`http://localhost:61345/todos/${el.id}/delete`)
-					.then(response => response.json())
-					.then(data => {
-						el.Complete = true;
-						alert(data);
-					});
-				}
+$("#todos").on("click", ".btn-delete",function(e){
+	let li = $(this).parent("li");
+	console.log(li.attr("id"));
+	todoLists.forEach(function(el){
+		if(el.ID == li.attr("id")) { 
+			fetch(`http://localhost:61345/todos/${el.ID}/delete`)
+			.then(response => response.json())
+			.then(data => {
+				el.Complete = true;
+				alert(data);
 			});
 		}
-		updateTodo();
 	});
+	updateTodo();
 });
 
 updateTodo();
