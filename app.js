@@ -4,11 +4,17 @@ var id = 1;
 
 btnAdd.addEventListener("click", function(){
 	let todo = {
-		id: id++,
+		id: todoLists[todoLists.length-1].ID+1,
 		value: txtTodo.value,
 		complete: false
 	};
 	todoLists.push(todo);
+	fetch("http://localhost:61345/todos", {
+		method: "POST",
+		body: JSON.stringify(todo)
+	})
+		.then(response => response.json())
+		.then(data => alert(data));
 	console.log(todoLists);
 	updateTodo();
 });
@@ -22,7 +28,7 @@ function updateTodo(){
 		console.log(todoLists);
 		todoLists.forEach(function(el){
 		let li = "";
-		if(el.complete){
+		if(el.Complete){
 			li = `<li id="${el.ID}" class="complete">${el.Value} <span class="btn-delete">x</span></li>`;
 		}else{
 			li = `<li id="${el.ID}">${el.Value} <span class="btn-delete">x</span></li>`;
@@ -39,7 +45,7 @@ todos.addEventListener("click", function(e){
 				fetch(`http://localhost:61345/todos/${el.id}/completed`)
 				.then(response => response.json())
 				.then(data => {
-					el.complete = true;
+					el.Complete = true;
 					alert(data);
 				});
 			}
@@ -56,7 +62,7 @@ document.querySelectorAll(".btn-delete").forEach(function(el, i){
 					fetch(`http://localhost:61345/todos/${el.id}/delete`)
 					.then(response => response.json())
 					.then(data => {
-						el.complete = true;
+						el.Complete = true;
 						alert(data);
 					});
 				}
